@@ -35,12 +35,14 @@ import java.util.List;
 public class GalleryFileActivity extends Activity {
 
     private GalleryViewPager mViewPager;
+    private List<String> items = new ArrayList<String>();
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
         
         String[] urls = null;
-        List<String> items = new ArrayList<String>();
+        items.add("none");
+
 		try {
 			urls = getAssets().list("");
 	
@@ -50,7 +52,7 @@ public class GalleryFileActivity extends Activity {
 	        	{
 	        		String path = getFilesDir() + "/" + filename;
 	        		copy(getAssets().open(filename), new File(path) );
-	        		items.add(path);
+	        		//items.add(path);
 	        	}
 	        }
 		} catch (IOException e) {
@@ -63,7 +65,7 @@ public class GalleryFileActivity extends Activity {
 			@Override
 			public void onItemChange(int currentPosition)
 			{
-				Toast.makeText(GalleryFileActivity.this, "Current item is " + currentPosition, Toast.LENGTH_SHORT).show();
+				Toast.makeText(GalleryFileActivity.this, "File " + GalleryFileActivity.this.items.get(currentPosition), Toast.LENGTH_SHORT).show();
 			}
 		});
         

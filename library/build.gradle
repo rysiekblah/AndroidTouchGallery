@@ -1,0 +1,57 @@
+repositories{
+    mavenCentral()
+    mavenLocal()
+    maven {
+        url 'http://repo1.maven.org/maven2'
+    }
+}
+
+buildscript {
+    repositories {
+        maven {
+            url 'http://repo1.maven.org/maven2'
+        }
+        mavenCentral()
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.9.+'
+    }
+}
+
+apply plugin: 'android-library'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.0.0"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 19
+    }
+}
+
+dependencies {
+    compile 'com.android.support:support-v4:19.0.1'
+}
+
+task clearJar(type: Delete) {
+    delete 'build/libs/androidgallery.jar'
+}
+
+task copyJar(type: Copy) {
+    from('build/libs/') {
+        include '**/*.jar'
+    }
+    into('../libs/')
+}
+
+
+task makeJar(type: Copy) {
+    from('build/bundles/release/')
+    into('build/libs/')
+    include('classes.jar')
+    rename ('classes.jar', 'androidgallery.jar')
+}
+
+makeJar.dependsOn(clearJar, build, copyJar)
